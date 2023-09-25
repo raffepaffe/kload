@@ -1,0 +1,33 @@
+run:
+
+linters:
+  enable-all: true
+  disable:
+    - interfacer
+    - ineffassign
+    - structcheck
+    - deadcode
+    - depguard
+    - nosnakecase
+    - ifshort
+    - forbidigo
+    - funlen
+    - gocritic
+    - golint
+    - goerr113
+    - gosec
+    - gomnd
+    - gocognit
+    - cyclop
+    - scopelint
+    - exhaustivestruct
+    - maligned
+    - varcheck
+    - rowserrcheck
+    - wastedassign
+    - gci
+    - wsl
+    - exhaustruct
+    - paralleltest
+    - testpackage
+    - varnamelen

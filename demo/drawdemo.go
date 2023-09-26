@@ -43,7 +43,7 @@ func newDatasource() *datasource {
 
 	elements := make([]*k8s.Element, 0)
 
-	for i := 0; i < 3; i++ {
+	for i := 0; i < 2; i++ {
 		e := &k8s.Element{
 			Name:        "http-server" + "/" + "agdf-1df" + strconv.Itoa(i),
 			CPU:         rand.Float64() * 100,

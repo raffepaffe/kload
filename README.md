@@ -12,7 +12,7 @@ Most likely you have them both installed.
 
 ### Source
 ```
-$go install github.com/raffepaffe/kload@latest
+go install github.com/raffepaffe/kload@latest
 ```
 
 
@@ -25,7 +25,7 @@ on the top of each graph together with cpu and memory limits.
 
 Show all nodes in your cluster
 ```
-$kload -node
+kload -node
 ```
 [<img src="./doc/node-example-demo.png" alt="kloaddemo" type="image/png">]()
 
@@ -34,31 +34,37 @@ The default value for the number of columns is set to three. If you have three n
 
 You can adjust the numer of columns with the column parameter. 
 ```
-$kload -node -columns 2
+kload -node -columns 2
 ```
 [<img src="./doc/node-example-2-columns.png" alt="kloaddemo" type="image/png">]()
 
 You can show only the nodes you are interested in by listing the node names. This will show node-000 node-001.
 ```
-$kload -node node-000 node-001
+kload -node node-000 node-001
 ```
 
 ### Show cpu and memory for the pods and containers in your cluster
 
 Show the pods in the prod namespace
 ```
-$kload -pod -ns prod  
+kload -pod -ns prod  
 ```
 
 Show the pods in the prod namespace, two columns wide and with the namne http-server and app-server
 ```
-$kload -pod -ns prod -columns 2 http-server app-server
+kload -pod -ns prod -columns 2 http-server app-server
 ```
 
-Show the pods in the prod namespace, two columns wide, the name can't contain app or http, with the name server.
-You can use regexp with the -v flag.
+Show the pods in the prod namespace, two columns wide, the pod name can't contain app or http, with the name server.
+You can use regexp with the -vp flag.
 ```
-$kload -pod -ns prod -columns 2 -v 'app|http' server
+kload -pod -ns prod -columns 2 -vp 'app|http' server
+```
+
+Show the pods in the prod namespace, two columns wide, the name of the containers can't contain app or http, with the name server.
+You can use regexp with the -vc flag.
+```
+kload -pod -ns prod -columns 2 -vc 'app|http' server
 ```
 
 ## Issues

@@ -75,19 +75,21 @@ func createPodResources(clientset *kubernetes.Clientset, command *cmd.Command) (
 	}
 
 	for _, pod := range pods.Items {
-		if keepPod(pod.Name, command.Attributes, command.ExcludePattern) {
+		if keepPod(pod.Name, command.Attributes, command.ExcludePodPattern) {
 			p := &Pod{
 				Namespace: pod.Namespace,
 				Name:      pod.Name,
 				Label:     pod.Labels["app"],
 			}
 			for _, container := range pod.Spec.Containers {
-				c := &Container{
-					Name:        container.Name,
-					CPULimit:    container.Resources.Limits.Cpu().MilliValue(),
-					MemoryLimit: toMegaBytes(container.Resources.Limits.Memory().Value()),
+				if keepContainer(container.Name, command.ExcludeContainerPattern) {
+					c := &Container{
+						Name:        container.Name,
+						CPULimit:    container.Resources.Limits.Cpu().MilliValue(),
+						MemoryLimit: toMegaBytes(container.Resources.Limits.Memory().Value()),
+					}
+					p.Containers = append(p.Containers, c)
 				}
-				p.Containers = append(p.Containers, c)
 			}
 			result = append(result, p)
 		}
@@ -130,6 +132,17 @@ func keepPod(podName string, podNames []string, excludePattern string) bool {
 				return true
 			}
 		}
+	}
+
+	return false
+}
+
+func keepContainer(name string, excludePattern string) bool {
+	if len(name) == 0 {
+		return true
+	}
+	if utf8.RuneCountInString(excludePattern) == 0 || !matchPattern(excludePattern, name) {
+		return true
 	}
 
 	return false

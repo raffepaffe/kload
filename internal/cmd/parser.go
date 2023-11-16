@@ -19,12 +19,13 @@ const (
 const defaultColumns = 3
 
 type Command struct {
-	Kubeconfig     string
-	Action         Action
-	Namespace      string
-	Attributes     []string
-	MaxColumns     int
-	ExcludePattern string
+	Kubeconfig              string
+	Action                  Action
+	Namespace               string
+	Attributes              []string
+	MaxColumns              int
+	ExcludePodPattern       string
+	ExcludeContainerPattern string
 }
 
 // Parse creates a Command based in flags on the command line.
@@ -33,7 +34,8 @@ func Parse() (*Command, error) {
 	podAction := flag.Bool("pod", false, "show pods")
 	namespace := flag.String("ns", "", "namespace to use with the -pod flag")
 	maxColumns := flag.Int("columns", defaultColumns, "number of columns on one row")
-	exclude := flag.String("v", "", "exclude pod name when used with the -pod flag")
+	excludePod := flag.String("vp", "", "exclude pod name when used with the -pod flag")
+	excludeContainer := flag.String("vc", "", "exclude container name when used with the -pod flag")
 
 	var kubeconfig *string
 	if home := homedir.HomeDir(); home != "" {
@@ -58,10 +60,11 @@ func Parse() (*Command, error) {
 	}
 
 	c := &Command{
-		Kubeconfig:     *kubeconfig,
-		Namespace:      *namespace,
-		MaxColumns:     *maxColumns,
-		ExcludePattern: *exclude,
+		Kubeconfig:              *kubeconfig,
+		Namespace:               *namespace,
+		MaxColumns:              *maxColumns,
+		ExcludePodPattern:       *excludePod,
+		ExcludeContainerPattern: *excludeContainer,
 	}
 
 	if *nodeAction {
